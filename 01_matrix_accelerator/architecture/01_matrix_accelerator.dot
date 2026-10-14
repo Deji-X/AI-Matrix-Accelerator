@@ -1,0 +1,26 @@
+digraph G {
+graph [rankdir=TB, bgcolor="white", pad="0.28", nodesep="0.38", ranksep="0.62", splines=ortho, labelloc="t", labeljust="l", label="4×4 INT8 Matrix-Multiplication Accelerator\nReference architecture • sequential MAC datapath", fontname="DejaVu Sans", fontsize=20, fontcolor="#16324F"];
+node [shape=box, style="rounded,filled", color="#58718A", penwidth=1.4, fontname="DejaVu Sans", fontsize=11, fontcolor="#203040", margin="0.18,0.12"];
+edge [color="#58718A", penwidth=1.5, arrowsize=0.75, fontname="DejaVu Sans", fontsize=9, fontcolor="#203040"];
+host [label="Host / Control Interface\nwr_en • wr_matrix • wr_addr • wr_data\nstart • rd_addr", fillcolor="GREY"];
+ctrl [label="Control FSM\nIDLE → LOAD/COMPUTE → DONE", fillcolor="#DCEBFA"];
+a [label="Matrix A Storage\n16 × signed 8-bit elements", fillcolor="#DDF4EF"];
+b [label="Matrix B Storage\n16 × signed 8-bit elements", fillcolor="#DDF4EF"];
+idx [label="Index / Address Control\nrow • column • k", fillcolor="#FFF0CC"];
+mul [label="Signed 8 × 8 Multiplier", fillcolor="#ECE4FA"];
+acc [label="32-bit Accumulator", fillcolor="#ECE4FA"];
+c [label="Result Storage C\n16 × signed 32-bit elements", fillcolor="#DDF4EF"];
+read [label="Result Readback\nrow-major element selected by rd_addr", fillcolor="GREY"];
+host -> ctrl;
+host -> a;
+host -> b;
+ctrl -> idx;
+idx -> a;
+idx -> b;
+a -> mul;
+b -> mul;
+mul -> acc;
+acc -> c;
+c -> read;
+read -> host;
+}
